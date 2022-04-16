@@ -1,0 +1,13 @@
+Sitemap: http://www.knowledgetoearn.com/sitemap.xml
+
+# Block googlebot from example.com/directory1/... and example.com/directory2/...
+# but allow access to directory2/subdirectory1/...
+# All other directories on the site are allowed by default.
+User-agent: googlebot
+Disallow: /backend/
+Disallow: /common/
+Disallow: /vendor/
+Disallow: /console/
+Disallow: /environments/
+Disallow: /vagrant/
+Allow: /frontend/web/
