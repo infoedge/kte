@@ -1,0 +1,214 @@
+<?php
+
+namespace frontend\modules\payments\models;
+
+use Yii;
+
+/**
+ * This is the model class for table "user".
+ *
+ * @property int $id
+ * @property string $username
+ * @property string $auth_key
+ * @property string $password_hash
+ * @property string|null $password_reset_token
+ * @property string $verification_token
+ * @property string $email
+ * @property int|null $peopleId
+ * @property int $status
+ * @property int $created_at
+ * @property int $updated_at
+ * @property string $password
+ *
+ * @property HitCounter[] $hitCounters
+ * @property Sponsorship[] $sponsorships
+ * @property Sponsorship[] $sponsorships0
+ * @property Tblfundstransfer[] $tblfundstransfers
+ * @property Tblfundstransfer[] $tblfundstransfers0
+ * @property Tblgcodes[] $tblgcodes
+ * @property Tblgcodes[] $tblgcodes0
+ * @property Tblrankearnings[] $tblrankearnings
+ * @property Tblrankearnings[] $tblrankearnings0
+ * @property Tblwithdrawal[] $tblwithdrawals
+ * @property Tblwtpwd $tblwtpwd
+ * @property Tempsponsor[] $tempsponsors
+ * @property Tempsponsor[] $tempsponsors0
+ */
+class User extends \yii\db\ActiveRecord
+{
+    /**
+     * {@inheritdoc}
+     */
+    public static function tableName()
+    {
+        return 'user';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function rules()
+    {
+        return [
+            [['username', 'auth_key', 'password_hash', 'verification_token', 'email', 'created_at', 'updated_at', 'password'], 'required'],
+            [['peopleId', 'status', 'created_at', 'updated_at'], 'integer'],
+            [['username', 'password_hash', 'password_reset_token', 'verification_token', 'email', 'password'], 'string', 'max' => 255],
+            [['auth_key'], 'string', 'max' => 32],
+            [['username'], 'unique'],
+            [['email'], 'unique'],
+            [['peopleId'], 'unique'],
+            [['password_reset_token'], 'unique'],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => Yii::t('app', 'ID'),
+            'username' => Yii::t('app', 'Username'),
+            'auth_key' => Yii::t('app', 'Auth Key'),
+            'password_hash' => Yii::t('app', 'Password Hash'),
+            'password_reset_token' => Yii::t('app', 'Password Reset Token'),
+            'verification_token' => Yii::t('app', 'Verification Token'),
+            'email' => Yii::t('app', 'Email'),
+            'peopleId' => Yii::t('app', 'People ID'),
+            'status' => Yii::t('app', 'Status'),
+            'created_at' => Yii::t('app', 'Created At'),
+            'updated_at' => Yii::t('app', 'Updated At'),
+            'password' => Yii::t('app', 'Password'),
+        ];
+    }
+
+    /**
+     * Gets query for [[HitCounters]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getHitCounters()
+    {
+        return $this->hasMany(HitCounter::className(), ['serv_auth_user_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Sponsorships]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSponsorships()
+    {
+        return $this->hasMany(Sponsorship::className(), ['ChangedBy' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Sponsorships0]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSponsorships0()
+    {
+        return $this->hasMany(Sponsorship::className(), ['RecordBy' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Tblfundstransfers]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTblfundstransfers()
+    {
+        return $this->hasMany(Tblfundstransfer::className(), ['changedby' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Tblfundstransfers0]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTblfundstransfers0()
+    {
+        return $this->hasMany(Tblfundstransfer::className(), ['recordBy' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Tblgcodes]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTblgcodes()
+    {
+        return $this->hasMany(Tblgcodes::className(), ['changedBy' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Tblgcodes0]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTblgcodes0()
+    {
+        return $this->hasMany(Tblgcodes::className(), ['recordBy' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Tblrankearnings]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTblrankearnings()
+    {
+        return $this->hasMany(Tblrankearnings::className(), ['cashInBy' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Tblrankearnings0]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTblrankearnings0()
+    {
+        return $this->hasMany(Tblrankearnings::className(), ['recordBy' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Tblwithdrawals]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTblwithdrawals()
+    {
+        return $this->hasMany(Tblwithdrawal::className(), ['recordBy' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Tblwtpwd]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTblwtpwd()
+    {
+        return $this->hasOne(Tblwtpwd::className(), ['userId' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Tempsponsors]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTempsponsors()
+    {
+        return $this->hasMany(Tempsponsor::className(), ['member' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Tempsponsors0]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTempsponsors0()
+    {
+        return $this->hasMany(Tempsponsor::className(), ['RecordBy' => 'id']);
+    }
+}
